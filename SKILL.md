@@ -1,0 +1,57 @@
+---
+name: recycling-brand-case-copywriter
+description: Adapt one Hong Kong recycling case from the shared Recycling/案例 pool into a single brand's published case page—rewriting copy for that brand's brand.md and copywriter.md SEO targets, copying webp images into the brand repo, and writing collection content with readable tables. Use when assigning or editing brand-specific case studies for ScrapBroHK, hkrecyclingco, green-hong-kong, or green-printer-consumables-recycling; not for generating new scene images or creating brand-neutral storylines only.
+---
+
+# Recycling Brand Case Copywriter
+
+Turn one source case into one brand-owned published case. Each source case is exclusive to one brand (see the allocation ledger).
+
+## Required inputs
+
+- Brand key: `ScrapBroHK` | `hkrecyclingco` | `green-hong-kong` | `green-printer-consumables-recycling`
+- Source path under `Recycling/案例/{類別}/caseNN/`
+- Optional: override `caseId` only if ledger already lists it
+
+If brand or source path is missing, ask one short question.
+
+## Before writing
+
+1. Confirm git root and remote belong to the target brand only.
+2. Read, in order:
+   - Brand `docs/ssot/brand.md`
+   - Brand `docs/ssot/copywriter.md`
+   - Parent `Recycling/docs/case-allocation.md` — verify this source is assigned to this brand and not already published elsewhere
+   - Source `prompt01.md`, `prompt02.md`, `storyline.md`
+3. Open and visually inspect `image01.webp` and `image02.webp`. Claims must match visible equipment and handling.
+4. Read [references/field-mapping.md](references/field-mapping.md) and [references/rewrite-rules.md](references/rewrite-rules.md).
+
+## Execution
+
+1. Resolve `caseId` from the ledger slug (preferred) or storyline `url` final segment.
+2. Run the brand's `scripts/build-case-images.mjs` (or equivalent) to write webp variants into `public/cases/{caseId}/` (or brand path documented in copywriter.md). Do not commit source PNGs from the parent pool.
+3. Rewrite storyline into the brand collection format:
+   - ScrapBroHK / hkrecyclingco / green-hong-kong → Markdown + frontmatter
+   - green-printer → JSON
+4. Apply brand voice, SEO targets, and red lines from `copywriter.md`. Allow editorial rewrite of district framing, anonymous client angle, title, and queries; keep equipment kinds/counts and image-visible facts consistent.
+5. Build a readable equipment table and FAQ in body or structured fields.
+6. Set Chinese-only publish fields per loosened gates (`status: published` or `published: true`). Do not require English pair for first ship.
+7. Run brand validator (if any) and `npm run build`. Fix errors before finishing.
+8. Update ledger row status to `pilot` or `published` in the parent `case-allocation.md` when the user authorized that write.
+
+## Semantic review checklist
+
+- Inventory counts match table, summary, outcomes, and visible images
+- No payment/donation universal promises; case fees stay case-specific
+- Printer brand: only 全新／未開封／原裝 as current acceptance
+- Internal links resolve on that brand site
+- Title / primary query not duplicated within the same brand's existing cases
+- Hub lists a card; detail page has its own URL and meta
+
+## Boundaries
+
+- Do not assign the same source case to a second brand
+- Do not edit other brands in the same turn unless the user explicitly batch-requests
+- Do not change DNS, Cloudflare bindings, or production deploy unless separately authorized
+- Do not use `$recycling-case-generator` image generation here; reuse existing webp
+- Do not push or open PRs unless the user asks
