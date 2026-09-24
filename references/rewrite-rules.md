@@ -8,7 +8,9 @@
 
 ## 允許改寫
 
-- 地區側寫與匿名客戶情境（不新增可識別 PII）
+Pipeline 模式優先讀 `case-brief.json`：下列地區與 query 改寫權只適用於 standalone。Pipeline 鎖定品牌、搜尋意圖、primary query、地區、場景與器材/SKU/數量；可調整語句與段落，但不能重新選題。標題不強制地區開頭。
+
+- 地區側寫與客戶情境（可使用一般或已提供的客戶背景，不新增未獲授權的可識別 PII）
 - 標題、`seoTitle`、`metaDescription`、primary／secondary query
 - 難點與實用經驗的敘事角度（符合品牌：無償捐贈 vs 有價收購 vs 耗材 SKU）
 - 內部連結改為該品牌真實路徑
@@ -40,6 +42,6 @@
 
 ## 圖片
 
-- 只用來源 `image01.webp`／`image02.webp` 經 `build-case-images.mjs` 產出的檔
+- Pipeline 用母層 `scripts/build-case-images.mjs` 匯出 `assets.json` 中已驗證的檔案，不再轉碼；standalone 舊案例保留原 WebP 路徑。
 - 不把母層 PNG 或未選中的 angle-test／old 變體拷進品牌 repo
-- cover 1200×630 由 before 圖中心裁切，不放大超過源尺寸
+- cover 以 1200×630 為上限由清理後 before PNG 中心裁切；不足時沿用 manifest 實際尺寸與檔名，不放大。
